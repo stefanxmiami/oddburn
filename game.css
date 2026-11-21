@@ -190,3 +190,7 @@ button:active:not(:disabled){transform:translateY(1px)}
 #ratingGuide{list-style:none;padding:0;margin:6px 0}
 #ratingGuide b{display:inline-block;width:7ch;color:#ffe8be}
 #title:has(details[open]){max-height:75%;overflow:auto;top:12%;transform:none}
+.creator-credit{font:12px/1.5 Consolas,monospace;color:#bfd1cf;margin:14px 0 0}
+.creator-credit a{color:var(--mint);text-underline-offset:3px}
+.creator-credit a:focus-visible{outline:2px solid var(--mint);outline-offset:3px}
+@media(max-height:680px){#title{max-height:calc(100dvh - 100px);overflow:auto;top:54px;transform:none}}

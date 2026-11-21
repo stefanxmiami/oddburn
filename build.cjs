@@ -14,4 +14,11 @@ const styles = read('game.css').replace('RADIO_FONT_URL','data:font/woff;base64,
 const html = read('index.html').replace('STYLES_HERE',()=>styles).replace('CODE_HERE',()=>js);
 fs.mkdirSync(path.join(root,'dist'),{recursive:true});
 fs.writeFileSync(path.join(root,'dist','index.html'),html);
+const creatorPage = require('./creator.cjs');
+const creatorDir = path.join(root, 'dist', 'creator');
+fs.mkdirSync(path.join(creatorDir, 'mk'), {recursive: true});
+fs.writeFileSync(path.join(creatorDir, 'index.html'), creatorPage('en'));
+fs.writeFileSync(path.join(creatorDir, 'mk', 'index.html'), creatorPage('mk'));
+fs.copyFileSync(path.join(root, 'creator.css'), path.join(creatorDir, 'creator.css'));
+fs.copyFileSync(path.join(root, 'art/environment/observatory-night.png'), path.join(creatorDir, 'station.png'));
 

@@ -1,0 +1,19 @@
+* { box-sizing: border-box }
+:root { color-scheme: dark; color: #fff0d4; background: #071225; font-family: Consolas, "Courier New", monospace }
+body { margin: 0; min-height: 100svh; border-top: 3px solid #90f6b6 }
+header, main { width: min(1120px, 90%); margin-inline: auto }
+header, nav, .work { display: flex; align-items: center; flex-wrap: wrap; gap: 1rem }
+header { justify-content: space-between; padding: 1.25rem 0; border-bottom: 1px solid #304454; font-size: .85rem }
+a { color: #90f6b6; text-underline-offset: .3em }
+a:hover, a:focus-visible { color: #fff0d4 }
+a:focus-visible { outline: 2px solid #ffdc9c; outline-offset: 4px }
+nav { gap: 0; border: 1px solid #45665f }
+nav a { padding: .72rem .8rem; text-decoration: none }
+nav [aria-current] { background: #90f6b6; color: #081c20 }
+main { display: grid; grid-template-columns: 1fr 1.1fr; align-items: center; gap: clamp(2rem,5vw,5rem); min-height: 75svh; padding-block: 3rem }
+.role { color: #90f6b6; text-transform: uppercase; letter-spacing: .12em; font-size: .8rem }
+h1 { margin: .25em 0 .45em; font-size: clamp(2.5rem,5vw,4.25rem); line-height: 1; letter-spacing: -.06em }
+.profile > p:not(.role) { max-width: 46ch; line-height: 1.65; color: #cbd9d5 }
+.work { margin-top: 1.55rem; gap: 1.4rem }
+.station { display: block; width: 100%; height: auto; image-rendering: pixelated; border: 1px solid #45665f; box-shadow: 5px 5px #132a37 }
+@media(max-width:720px) { main { grid-template-columns: 1fr; gap: 2rem; min-height: auto; padding-block: 2.5rem } }

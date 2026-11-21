@@ -7,7 +7,10 @@ header { justify-content: space-between; padding: 1.25rem 0; border-bottom: 1px 
 a { color: #90f6b6; text-underline-offset: .3em }
 a:hover, a:focus-visible { color: #fff0d4 }
 a:focus-visible { outline: 2px solid #ffdc9c; outline-offset: 4px }
-nav { gap: 0; border: 1px solid #45665f }
+.languages { position: relative; margin-left: auto; color: #90f6b6 }
+.languages summary { cursor: pointer; border: 1px solid #45665f; padding: .7rem .9rem }
+.languages summary:focus-visible { outline: 2px solid #ffdc9c; outline-offset: 3px }
+.languages nav { position: absolute; z-index: 1; right: 0; top: calc(100% + 4px); display: grid; grid-template-columns: repeat(2,1fr); gap: 0; min-width: min(16rem,90vw); max-height: 62vh; overflow: auto; background: #0d1f30; border: 1px solid #45665f }
 nav a { padding: .72rem .8rem; text-decoration: none }
 nav [aria-current] { background: #90f6b6; color: #081c20 }
 main { display: grid; grid-template-columns: 1fr 1.1fr; align-items: center; gap: clamp(2rem,5vw,5rem); min-height: 75svh; padding-block: 3rem }

@@ -1,0 +1,122 @@
+{
+  "sq": {
+    "label": "Shqip",
+    "name": "Stefan Ivanov",
+    "role": "Dizajn dhe zhvillim",
+    "bio": "Jam programues nga Maqedonia. Krijoj lojëra dhe mjete për ueb, mes tyre Oddburn dhe Rima, një fjalor rimash për gjuhën maqedonase.",
+    "game": "E krijova Oddburn duke u nisur nga një pyetje: sa larg mund të fluturosh me një përgjigje që s’i shkon ndër mend askujt tjetër?",
+    "portfolio": "Portofoli im",
+    "rima": "Zbulo Rima",
+    "back": "Kthehu te Oddburn",
+    "language": "Gjuha e faqes",
+    "alt": "Radioteleskopi i observatorit polar të Oddburn nën dritat e gjelbra të aurorës."
+  },
+  "sr": {
+    "label": "Српски",
+    "name": "Стефан Иванов",
+    "role": "Дизајн и развој",
+    "bio": "Програмер сам из Македоније. Правим игре и веб-алате, међу којима су Oddburn и Рима, речник рима за македонски језик.",
+    "game": "Кад сам осмишљавао Oddburn, почео сам од једног питања: колико далеко можеш да одлетиш ако даш одговор који никоме другом не пада на памет?",
+    "portfolio": "Мој портфолио",
+    "rima": "Истражи Риму",
+    "back": "Назад на Oddburn",
+    "language": "Језик странице",
+    "alt": "Радиотелескоп у поларној опсерваторији игре Oddburn под зеленом поларном светлошћу."
+  },
+  "hr": {
+    "label": "Hrvatski",
+    "name": "Stefan Ivanov",
+    "role": "Dizajn i razvoj",
+    "bio": "Programer sam iz Makedonije. Izrađujem igre i web-alate, među kojima su Oddburn i Rima, rječnik rima za makedonski jezik.",
+    "game": "Kad sam osmišljavao Oddburn, krenuo sam od jednog pitanja: koliko daleko možeš odletjeti ako daš odgovor koji nikome drugome ne padne na pamet?",
+    "portfolio": "Moj portfolio",
+    "rima": "Istraži Rimu",
+    "back": "Natrag na Oddburn",
+    "language": "Jezik stranice",
+    "alt": "Radioteleskop u polarnoj zvjezdarnici igre Oddburn pod zelenom polarnom svjetlošću."
+  },
+  "bg": {
+    "label": "Български",
+    "name": "Стефан Иванов",
+    "role": "Дизайн и разработка",
+    "bio": "Програмист съм от Македония. Създавам игри и уеб инструменти, сред които са Oddburn и Рима, речник на римите за македонския език.",
+    "game": "Когато създавах Oddburn, тръгнах от един въпрос: колко далеч можеш да отлетиш с отговор, за който никой друг не се сеща?",
+    "portfolio": "Моето портфолио",
+    "rima": "Разгледай Рима",
+    "back": "Обратно към Oddburn",
+    "language": "Език на страницата",
+    "alt": "Радиотелескопът в полярната обсерватория на Oddburn под зелено полярно сияние."
+  },
+  "el": {
+    "label": "Ελληνικά",
+    "name": "Στέφαν Ιβάνοφ",
+    "role": "Σχεδιασμός και ανάπτυξη",
+    "bio": "Είμαι προγραμματιστής από τη Μακεδονία. Φτιάχνω παιχνίδια και διαδικτυακά εργαλεία, όπως το Oddburn και το Rima, ένα λεξικό ομοιοκαταληξίας για τη μακεδονική γλώσσα.",
+    "game": "Όταν σχεδίαζα το Oddburn, ξεκίνησα με μια ερώτηση: πόσο μακριά μπορείς να πετάξεις με μια απάντηση που δεν σκέφτεται κανείς άλλος;",
+    "portfolio": "Το πορτφόλιό μου",
+    "rima": "Ανακάλυψε το Rima",
+    "back": "Επιστροφή στο Oddburn",
+    "language": "Γλώσσα σελίδας",
+    "alt": "Το ραδιοτηλεσκόπιο στο πολικό αστεροσκοπείο του Oddburn κάτω από το πράσινο σέλας."
+  },
+  "tr": {
+    "label": "Türkçe",
+    "name": "Stefan Ivanov",
+    "role": "Tasarım ve geliştirme",
+    "bio": "Makedonyalı bir yazılımcıyım. Oyunlar ve web araçları geliştiriyorum. Bunlar arasında Oddburn ve Makedonca için hazırladığım kafiye sözlüğü Rima da var.",
+    "game": "Oddburn’ü tasarlarken tek bir sorudan yola çıktım: başka kimsenin aklına gelmeyen bir cevapla ne kadar uzağa uçabilirsin?",
+    "portfolio": "Portfolyom",
+    "rima": "Rima’yı keşfet",
+    "back": "Oddburn’e dön",
+    "language": "Sayfa dili",
+    "alt": "Yeşil kutup ışıkları altında Oddburn’ün kutup gözlemevindeki radyo teleskobu."
+  },
+  "de": {
+    "label": "Deutsch",
+    "name": "Stefan Ivanov",
+    "role": "Design und Entwicklung",
+    "bio": "Ich bin Entwickler aus Mazedonien. Ich entwickle Spiele und Webtools, darunter Oddburn und Rima, ein Reimwörterbuch für die mazedonische Sprache.",
+    "game": "Am Anfang von Oddburn stand für mich eine Frage: Wie weit kannst du mit einer Antwort fliegen, auf die sonst niemand kommt?",
+    "portfolio": "Mein Portfolio",
+    "rima": "Rima entdecken",
+    "back": "Zurück zu Oddburn",
+    "language": "Seitensprache",
+    "alt": "Das Radioteleskop der Polarsternwarte in Oddburn unter grünem Polarlicht."
+  },
+  "es": {
+    "label": "Español",
+    "name": "Stefan Ivanov",
+    "role": "Diseño y desarrollo",
+    "bio": "Soy desarrollador de Macedonia. Creo juegos y herramientas web, entre ellos Oddburn y Rima, un diccionario de rimas en macedonio.",
+    "game": "Al crear Oddburn, partí de una pregunta: ¿hasta dónde podrías volar con una respuesta que no se le ocurre a nadie más?",
+    "portfolio": "Mi portafolio",
+    "rima": "Descubre Rima",
+    "back": "Volver a Oddburn",
+    "language": "Idioma de la página",
+    "alt": "El radiotelescopio del observatorio polar de Oddburn bajo una aurora verde."
+  },
+  "fr": {
+    "label": "Français",
+    "name": "Stefan Ivanov",
+    "role": "Conception et développement",
+    "bio": "Je suis développeur et je viens de Macédoine. Je crée des jeux et des outils pour le web, dont Oddburn et Rima, un dictionnaire de rimes en macédonien.",
+    "game": "En créant Oddburn, je suis parti d’une question : jusqu’où pourrais-tu voler avec une réponse à laquelle personne d’autre ne pense ?",
+    "portfolio": "Mon portfolio",
+    "rima": "Découvrir Rima",
+    "back": "Retour à Oddburn",
+    "language": "Langue de la page",
+    "alt": "Le radiotélescope de l’observatoire polaire d’Oddburn sous une aurore verte."
+  },
+  "it": {
+    "label": "Italiano",
+    "name": "Stefan Ivanov",
+    "role": "Design e sviluppo",
+    "bio": "Sono uno sviluppatore macedone. Creo giochi e strumenti per il web, tra cui Oddburn e Rima, un dizionario di rime per la lingua macedone.",
+    "game": "Ho creato Oddburn partendo da una domanda: quanto lontano potresti volare con una risposta che non viene in mente a nessun altro?",
+    "portfolio": "Il mio portfolio",
+    "rima": "Scopri Rima",
+    "back": "Torna a Oddburn",
+    "language": "Lingua della pagina",
+    "alt": "Il radiotelescopio dell’osservatorio polare di Oddburn sotto un’aurora verde."
+  }
+}

@@ -1,5 +1,6 @@
 const copy = {
   en: {
+    label: 'English',
     name: 'Stefan Ivanov',
     role: 'Design and development',
     bio: 'I’m a developer from Macedonia. I build games and web tools, including Oddburn and Rima, a rhyming dictionary for Macedonian.',
@@ -11,6 +12,7 @@ const copy = {
     alt: 'The radio telescope at Oddburn’s polar observatory beneath a green aurora.'
   },
   mk: {
+    label: 'Македонски',
     name: 'Стефан Иванов',
     role: 'Дизајн и изработка',
     bio: 'Јас сум програмер од Македонија. Правам игри и веб-алатки, меѓу кои се Oddburn и Рима, речник на рими за македонскиот јазик.',
@@ -20,15 +22,19 @@ const copy = {
     back: 'Назад кон Oddburn',
     language: 'Јазик на страницата',
     alt: 'Радиотелескопот на поларната опсерваторија од Oddburn под зелена поларна светлина.'
-  }
+  },
+  ...require('./creator-translations.json')
 };
 
-module.exports = function creatorPage(lang) {
+const languages = Object.keys(copy);
+const languagePath = code => code === 'en' ? '/creator/' : `/creator/${code}/`;
+
+function creatorPage(lang) {
   const t = copy[lang];
-  const links = Object.entries({en: 'English', mk: 'Македонски'}).map(([code, label]) => {
-    const href = code === 'en' ? '/creator/' : '/creator/mk/';
-    return `<a href="${href}" lang="${code}" hreflang="${code}"${code === lang ? ' aria-current="page"' : ''}>${label}</a>`;
+  const links = languages.map(code => {
+    return `<a href="${languagePath(code)}" lang="${code}" hreflang="${code}"${code === lang ? ' aria-current="page"' : ''}>${copy[code].label}</a>`;
   }).join('');
+  const alternates = languages.map(code => `<link rel="alternate" hreflang="${code}" href="${languagePath(code)}">`).join('\n');
   return `<!doctype html>
 <html lang="${lang}">
 <head>
@@ -37,12 +43,14 @@ module.exports = function creatorPage(lang) {
 <meta name="theme-color" content="#071225">
 <title>${t.name} · Oddburn</title>
 <meta name="description" content="${t.bio}">
-<link rel="alternate" hreflang="en" href="/creator/">
-<link rel="alternate" hreflang="mk" href="/creator/mk/">
+${alternates}
+<link rel="alternate" hreflang="x-default" href="/creator/">
 <link rel="stylesheet" href="/creator/creator.css">
 </head>
 <body>
-<header><a class="back" href="/">← ${t.back}</a><nav aria-label="${t.language}">${links}</nav></header>
+<header><a class="back" href="/">← ${t.back}</a>
+  <details class="languages"><summary aria-label="${t.language} · ${t.label}">${t.label}</summary><nav aria-label="${t.language}">${links}</nav></details>
+</header>
 <main>
   <div class="profile">
     <p class="role">${t.role}</p>
@@ -55,4 +63,6 @@ module.exports = function creatorPage(lang) {
 </main>
 </body>
 </html>`;
-};
+}
+
+module.exports = {creatorPage, languages};

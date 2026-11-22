@@ -146,14 +146,22 @@ function activeQuestion(){return qFor(run.deck[run.log.length])}
 function label(id,text){
   const h=el(id);h.replaceChildren();h.setAttribute('aria-label',text);
   if(!artReady){h.textContent=text;return}
-  for(const [i,word] of text.toUpperCase().split(' ').entries()){
+  for(const [i,word] of text.toUpperCase().replace(/[‘’ʼ]/g,"'").split(' ').entries()){
     if(i)h.append(' ');
     const c=document.createElement('canvas');c.className='pixel-word';c.setAttribute('aria-hidden','true');
-    c.width=Math.max(1,word.length*6-1);c.height=7;
+    const letters=[...word];
+    c.width=Math.max(1,letters.reduce((width,ch)=>width+(ch==="'"?3:6),0)-1);c.height=7;
     c.style.width=(c.width*.082)+'em';c.style.height='.574em';
-    const g=c.getContext('2d');for(const [j,ch] of [...word].entries()){
+    const g=c.getContext('2d');g.fillStyle='#ffefd6';
+    let x=0;
+    for(const ch of letters){
+      if(ch==="'"){
+        g.fillRect(x+1,0,1,2);g.fillRect(x,2,1,1);
+        x+=3;continue;
+      }
       const index=glyphs.indexOf(ch);
-      if(index>=0)g.drawImage(inkFont,index*6,0,5,7,j*6,0,5,7);
+      if(index>=0)g.drawImage(inkFont,index*6,0,5,7,x,0,5,7);
+      x+=6;
     }
     h.append(c);
   }

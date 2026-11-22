@@ -2,7 +2,69 @@ const entry = (name, km, aliases = []) => ({ name, km, aliases });
 const list = (names, km) => names.split('|').map(name => entry(name, km));
 const question = (id, title, prompt, detail, answers) => ({ id, title, prompt, detail, answers });
 
+function rankedQuestion(id, prompt, rows) {
+  const answers = rows.trim().split(/\s*\|\s*/).map((row, index) => {
+    const [name, ...aliases] = row.split(':');
+    return entry(name, index + 1, aliases);
+  });
+  return {id, prompt, answers};
+}
+
 const QUESTIONS = [
+  rankedQuestion('elements', 'Name an element on the periodic table.', `
+    Oxygen:O|Gold:Au|Hydrogen:H|Helium:He|Iron:Fe|Carbon:C|Silver:Ag|Copper:Cu|Nitrogen:N|Calcium:Ca|
+    Sodium:Na|Neon:Ne|Aluminium:Al:Aluminum|Magnesium:Mg|Zinc:Zn|Mercury:Hg:Quicksilver|Lead:Pb|Uranium:U|Platinum:Pt|Potassium:K|
+    Chlorine:Cl|Lithium:Li|Titanium:Ti|Nickel:Ni|Tin:Sn|Silicon:Si|Sulfur:S:Sulphur|Phosphorus:P|Fluorine:F|Iodine:I|
+    Arsenic:As|Plutonium:Pu|Cobalt:Co|Chromium:Cr|Tungsten:W:Wolfram|Radium:Ra|Boron:B|Bromine:Br|Argon:Ar|Krypton:Kr|
+    Xenon:Xe|Radon:Rn|Manganese:Mn|Beryllium:Be|Selenium:Se|Barium:Ba|Bismuth:Bi|Palladium:Pd|Cadmium:Cd|Strontium:Sr|
+    Gallium:Ga|Caesium:Cs:Cesium|Thorium:Th|Polonium:Po|Antimony:Sb|Vanadium:V|Zirconium:Zr|Germanium:Ge|Rhodium:Rh|Iridium:Ir|
+    Osmium:Os|Neodymium:Nd|Francium:Fr|Rubidium:Rb|Scandium:Sc|Yttrium:Y|Molybdenum:Mo|Technetium:Tc|Ruthenium:Ru|Indium:In|
+    Tellurium:Te|Hafnium:Hf|Tantalum:Ta|Rhenium:Re|Thallium:Tl|Astatine:At|Lanthanum:La|Cerium:Ce|Praseodymium:Pr|Promethium:Pm|
+    Samarium:Sm|Europium:Eu|Gadolinium:Gd|Terbium:Tb|Dysprosium:Dy|Holmium:Ho|Erbium:Er|Thulium:Tm|Ytterbium:Yb|Lutetium:Lu|
+    Niobium:Nb|Actinium:Ac|Protactinium:Pa|Neptunium:Np|Americium:Am|Curium:Cm|Berkelium:Bk|Californium:Cf|Einsteinium:Es|Fermium:Fm|
+    Mendelevium:Md|Nobelium:No|Lawrencium:Lr|Rutherfordium:Rf|Dubnium:Db|Seaborgium:Sg|Bohrium:Bh|Hassium:Hs|Meitnerium:Mt|Darmstadtium:Ds|
+    Roentgenium:Rg|Copernicium:Cn|Nihonium:Nh|Flerovium:Fl|Moscovium:Mc|Livermorium:Lv|Tennessine:Ts|Oganesson:Og`),
+  rankedQuestion('bears', 'Name a species of bear.', `
+    Polar bear:polar|Brown bear:brown:grizzly:grizzly bear:Kodiak:Kodiak bear|Giant panda:panda:panda bear|
+    American black bear:black bear:American black:North American black bear|Sun bear:Malayan sun bear:honey bear|
+    Sloth bear|Asiatic black bear:Asian black bear:moon bear|Spectacled bear:Andean bear:spectacled:Andean`),
+  rankedQuestion('us-states', 'Name a US state.', `
+    California:CA|Texas:TX|New York:NY:New York State|Florida:FL|Hawaii:HI|Alaska:AK|Nevada:NV|Washington:WA:Washington State|
+    Arizona:AZ|Ohio:OH|Colorado:CO|Michigan:MI|Georgia:GA|Illinois:IL|Pennsylvania:PA|Massachusetts:MA|New Jersey:NJ|
+    Alabama:AL|Tennessee:TN|Louisiana:LA|Virginia:VA|Oregon:OR|Minnesota:MN|Indiana:IN|Wisconsin:WI|Kansas:KS|
+    Kentucky:KY|North Carolina:NC|South Carolina:SC|Utah:UT|Oklahoma:OK|Mississippi:MS|Missouri:MO|New Mexico:NM|
+    Connecticut:CT|Maryland:MD|Arkansas:AR|Montana:MT|Iowa:IA|Idaho:ID|Nebraska:NE|Maine:ME|North Dakota:ND|
+    South Dakota:SD|West Virginia:WV|Wyoming:WY|Vermont:VT|New Hampshire:NH|Rhode Island:RI|Delaware:DE`),
+  rankedQuestion('compass', 'Name one of the 16 directions on a compass.', `
+    North:N|South:S|East:E|West:W|Northeast:NE|Northwest:NW|Southeast:SE|Southwest:SW|
+    North-northeast:NNE|North-northwest:NNW|South-southeast:SSE|South-southwest:SSW|
+    East-northeast:ENE|West-northwest:WNW|East-southeast:ESE|West-southwest:WSW`),
+  rankedQuestion('paris-sports', 'Name a sport in the Paris 2024 Summer Olympics.', `
+    Swimming:swim:freestyle:backstroke:butterfly:breaststroke|Athletics:track and field:running:marathon:sprinting:relay:shot put:javelin:discus:hammer throw:long jump:high jump:pole vault:triple jump:hurdles:decathlon:heptathlon:steeplechase:race walking|
+    Football:soccer|Basketball:basketball 5x5|Artistic gymnastics:gymnastics|Tennis|Volleyball:indoor volleyball|
+    Boxing|Road cycling:cycling:biking:cycling road|Table tennis:ping pong|Golf|Diving|Beach volleyball|
+    Judo|Badminton|Wrestling:freestyle wrestling:Greco-Roman wrestling|Archery|Skateboarding|Surfing|
+    Rugby sevens:rugby:rugby 7s|Fencing|Handball:team handball|Hockey:field hockey|Rowing|Weightlifting:Olympic lifting|
+    Artistic swimming:synchronised swimming:synchronized swimming|Water polo|Equestrian:horse riding:dressage:eventing:show jumping|
+    Sailing:windsurfing:kiteboarding|Triathlon|Taekwondo|Shooting:skeet:trap shooting|Rhythmic gymnastics|
+    Track cycling:cycling track|Mountain biking:mountain bike:MTB|BMX racing:BMX|BMX freestyle:freestyle BMX|
+    Marathon swimming:open water swimming|Trampoline:trampolining:trampoline gymnastics|3x3 basketball:3 on 3 basketball:basketball 3x3|
+    Sport climbing:climbing:rock climbing:speed climbing:bouldering|Canoe sprint:canoeing:kayaking:kayak sprint|Canoe slalom:kayak cross:kayak slalom|
+    Modern pentathlon:pentathlon|Breaking:breakdancing:break dancing`),
+  rankedQuestion('piano', 'Name a note you can play on a piano.', `
+    C:do:middle C:B sharp:B#|A:la|G:sol:so|D:re|E:mi:F flat:Fb|F:fa:E sharp:E#|B:ti:si:C flat:Cb|
+    F sharp:F#:G flat:Gb|C sharp:C#:D flat:Db|B flat:Bb:A sharp:A#|E flat:Eb:D sharp:D#|A flat:Ab:G sharp:G#`),
+  rankedQuestion('teeth', 'Name a type of human tooth.', `
+    Molar:molars:wisdom tooth:wisdom teeth|Canine:canines:cuspid:cuspids:eye tooth|Incisor:incisors:central incisor:lateral incisor|Premolar:premolars:bicuspid:bicuspids`),
+  rankedQuestion('months', 'Name a month of the year.', `
+    January:Jan|December:Dec|July:Jul|June:Jun|May|August:Aug|October:Oct|February:Feb|April:Apr|March:Mar|September:Sep:Sept|November:Nov`),
+  rankedQuestion('world-cup', "Name a country that won the men's football World Cup by 2022.", `
+    Brazil:Brasil|Argentina|Germany:West Germany:Deutschland|France|Italy:Italia|Spain:Espana|England|Uruguay`),
+  rankedQuestion('poker', 'Name a hand in five-card poker.', `
+    One pair:pair:a pair|Two pair:two pairs|Three of a kind:trips:set|
+    Full house|Flush|Straight|Royal flush|Four of a kind:quads|Straight flush|High card:no pair`),
+  rankedQuestion('countries-a', 'Name a country whose English name starts with A.', `
+    Australia|Argentina|Austria|Afghanistan|Albania|Algeria|Armenia|Angola|Azerbaijan|Andorra|Antigua and Barbuda:Antigua & Barbuda`),
   {
     id: 'capitals',
     prompt: 'Name a national capital city.',
@@ -22,13 +84,13 @@ const QUESTIONS = [
   question('dwarfs', 'Small-time giants', 'Name one of the five IAU-recognized dwarf planets.', 'The five named in the IAU’s established list.', [entry('Pluto', 10), entry('Ceres', 40), entry('Eris', 60), entry('Haumea', 80), entry('Makemake', 100)]),
   question('zodiac', 'Written in the stars', 'Name a Western zodiac sign.', 'The twelve traditional astrological signs.', [...list('Aries|Leo|Gemini|Scorpio', 10), ...list('Taurus|Virgo|Cancer|Libra|Sagittarius', 40), ...list('Capricorn|Aquarius|Pisces', 100)]),
   question('si', 'By the measure', 'Name an SI base unit.', 'One of seven. Unit names or symbols, not quantities.', [entry('Metre', 10, ['meter', 'm']), entry('Kilogram', 20, ['kg']), entry('Second', 20, ['s']), entry('Ampere', 40, ['amp', 'a']), entry('Kelvin', 60, ['k']), entry('Mole', 80, ['mol']), entry('Candela', 100, ['cd'])]),
-  question('cards', 'Card sharp', 'Name a suit in a standard French-suited deck.', 'One of the four familiar playing-card suits.', [entry('Hearts', 10, ['heart']), entry('Spades', 40, ['spade']), entry('Diamonds', 80, ['diamond']), entry('Clubs', 100, ['club'])]),
-  question('wonders', 'Ancient loot', 'Name one of the Seven Wonders of the Ancient World.', 'The ancient list. Short landmark names are accepted.', [entry('Great Pyramid of Giza', 10, ['Great Pyramid', 'Pyramid of Giza', 'Pyramids of Giza', 'Giza Pyramid', 'Giza Pyramids']), entry('Hanging Gardens of Babylon', 20, ['Hanging Gardens']), entry('Colossus of Rhodes', 30, ['Colossus']), entry('Lighthouse of Alexandria', 40, ['Pharos', 'Pharos of Alexandria']), entry('Temple of Artemis', 60, ['Temple of Artemis at Ephesus']), entry('Statue of Zeus at Olympia', 80, ['Statue of Zeus']), entry('Mausoleum at Halicarnassus', 100, ['Mausoleum of Halicarnassus', 'Mausoleum'])]),
+  question('cards', 'Card sharp', 'Name a suit in a standard deck of playing cards.', 'One of the four familiar playing-card suits.', [entry('Hearts', 10, ['heart']), entry('Spades', 40, ['spade']), entry('Diamonds', 80, ['diamond']), entry('Clubs', 100, ['club'])]),
+  question('wonders', 'Ancient loot', 'Name one of the Seven Wonders of the Ancient World.', 'The ancient list. Short landmark names are accepted.', [entry('Great Pyramid of Giza', 10, ['Great Pyramid', 'Pyramid of Giza', 'Pyramids of Giza', 'Giza Pyramid', 'Giza Pyramids', 'the pyramids', 'pyramids', 'pyramid', 'pyramids of Egypt']), entry('Hanging Gardens of Babylon', 20, ['Hanging Gardens']), entry('Colossus of Rhodes', 30, ['Colossus']), entry('Lighthouse of Alexandria', 40, ['Pharos', 'Pharos of Alexandria']), entry('Temple of Artemis', 60, ['Temple of Artemis at Ephesus']), entry('Statue of Zeus at Olympia', 80, ['Statue of Zeus']), entry('Mausoleum at Halicarnassus', 100, ['Mausoleum of Halicarnassus', 'Mausoleum'])]),
   question('vowels', 'Letter of the law', 'Name one of the five standard English vowel letters.', 'One letter. We’re leaving Y out of this job.', [entry('A', 10), entry('E', 20), entry('I', 40), entry('O', 60), entry('U', 100)]),
   question('roman', 'Roman riches', 'Name a Roman numeral symbol.', 'One of the seven single-letter symbols.', [entry('I', 10), entry('V', 20), entry('X', 30), entry('L', 60), entry('C', 80), entry('D', 100), entry('M', 80)]),
   question('week', 'Working the weekend', 'Name a day of the week.', 'English names, including the weekend.', [entry('Monday', 10, ['Mon']), entry('Tuesday', 80, ['Tue', 'Tues']), entry('Wednesday', 60, ['Wed']), entry('Thursday', 100, ['Thu', 'Thurs']), entry('Friday', 20, ['Fri']), entry('Saturday', 30, ['Sat']), entry('Sunday', 40, ['Sun'])]),
   question('g7', 'International job', 'Name a country in the Group of Seven (G7).', 'The seven member countries. The EU is not a country.', [entry('United States', 10, ['USA', 'US', 'United States of America', 'America']), entry('United Kingdom', 20, ['UK', 'Britain', 'Great Britain']), entry('Germany', 30), entry('Japan', 40), entry('France', 60), entry('Italy', 80), entry('Canada', 100)]),
-  question('seasons', 'Seasoned thief', 'Name one of the four temperate seasons.', 'Either British or American English is fine.', [entry('Summer', 10), entry('Winter', 40), entry('Spring', 80), entry('Autumn', 100, ['Fall'])]),
+  question('seasons', 'Seasoned thief', 'Name one of the four seasons.', 'Either British or American English is fine.', [entry('Summer', 10), entry('Winter', 40), entry('Spring', 80), entry('Autumn', 100, ['Fall'])]),
   question('strings', 'Pulling strings', 'Name an open string on a standard-tuned six-string guitar.', 'A single note letter. Standard tuning only.', [entry('E', 10), entry('A', 30), entry('D', 60), entry('G', 80), entry('B', 100)]),
   {
     id: "great-lakes",
@@ -325,7 +387,7 @@ const QUESTIONS = [
   },
   {
     id: "nordic",
-    prompt: "Name one of the five sovereign Nordic countries.",
+    prompt: "Name a Nordic country.",
     answers: [
       entry("Sweden", 10),
       entry("Norway", 10),
@@ -631,7 +693,23 @@ const QUESTIONS = [
   }
 ];
 
+const promptReplacements = {
+  moons:'planets', dwarfs:'planets', atmosphere:'planets',
+  noble:'elements', 'alkali-metals':'elements', halogens:'elements', forces:'elements',
+  si:'compass', strings:'piano', 'dna-bases':'teeth',
+  'spice-girls':'piano', 'queen-band':'piano', 'monty-python':'poker', cluedo:'cards',
+  fellowship:'bears', hogwarts:'zodiac', 'snow-white':'bears', friends:'months', simpsons:'bears',
+  'long-months':'months', 'tudor-queens':'uk-countries', 'bond-actors':'poker',
+  'states-m':'us-states', colonies:'us-states', rushmore:'us-states', 'great-lakes':'us-states',
+  boroughs:'us-states', 'pacific-states':'us-states', 'mexico-states':'us-states',
+  'australian-regions':'countries-a', 'canadian-regions':'capitals',
+  'grand-slams':'paris-sports', 'olympic-cities':'paris-sports',
+  'security-council':'countries-a', 'un-languages':'countries-a', g7:'world-cup',
+  equator:'south-america'
+};
+
 for(const q of QUESTIONS){
+  if(promptReplacements[q.id])q.replacedBy=promptReplacements[q.id];
   q.answers.sort((a,b)=>a.km-b.km);
   for(const [index,answer] of q.answers.entries()){
     answer.rank=index+1;
@@ -671,7 +749,9 @@ function spellingSimilarity(input, candidate) {
 }
 
 function validateAnswer(q, input) {
-  const key = value => normalize(value, q.strip);
+  const key = value => normalize(q.id==='piano'
+    ? value.replace(/[#♯]/g,' sharp').replace(/♭/g,' flat').replace(/([A-Ga-g])b(?=\d?$)/,'$1 flat').replace(/(?<=[a-z♭♯#])\d$/i,'')
+    : value, q.strip);
   const normalized = key(input);
   if (!normalized || q.blocked?.some(n => key(n) === normalized)) return null;
   const exact = q.answers.find(a => [a.name, ...a.aliases].some(n => key(n) === normalized));

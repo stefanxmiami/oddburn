@@ -47,6 +47,19 @@ function updateBrowse(dt){
 }
 el('followRocket').onclick=followRocket;
 const gameView=el('game');
+function fitKeyboard(){
+  const viewport=window.visualViewport;
+  const editing=viewport&&document.activeElement===el('response')&&viewport.scale===1&&innerHeight-viewport.height>100;
+  gameView.toggleAttribute('data-keyboard',!!editing);
+  if(editing){
+    gameView.style.setProperty('--keyboard-top',(viewport.offsetTop+6)+'px');
+    gameView.style.setProperty('--keyboard-room',Math.max(1,viewport.height-12)+'px');
+  }
+}
+window.visualViewport?.addEventListener('resize',fitKeyboard);
+window.visualViewport?.addEventListener('scroll',fitKeyboard);
+el('response').addEventListener('focus',fitKeyboard);
+el('response').addEventListener('blur',()=>gameView.removeAttribute('data-keyboard'));
 gameView.addEventListener('wheel',event=>{
   if(event.ctrlKey||Math.abs(event.deltaX)>Math.abs(event.deltaY))return;
   const panel=event.target.closest('.overlay');
@@ -215,7 +228,8 @@ function syncBoost(){
   el('boost').hidden=run.practice;
   el('boost').disabled=run.boostUsed;
   el('boost').setAttribute('aria-pressed',armed);
-  el('boost').textContent=run.boostUsed?'Boost spent':armed?'Boost armed ×1.5':'Arm boost ×1.5';
+  el('boost').textContent=run.boostUsed?'Spent':'Boost ×1.5';
+  el('boost').setAttribute('aria-label',run.boostUsed?'Boost spent':'Boost ×1.5 on this answer');
 }
 function ready(){
   screen('ready');const q=activeQuestion();
@@ -223,7 +237,7 @@ function ready(){
   el('legend').textContent=run.practice?'Open frequency / practice':'Uplink '+(run.log.length+1)+' / '+attempts;
   pips(run.log.length);label('headline',q.prompt);
   el('receiverArt').src=assetURLs[current.km>=orbitGate?'orbital-station':'launch-observatory'];
-  el('detail').textContent=run.practice?'Test any answer. Repeat the same prompt after the flight.':run.log.length===0?'A valid signal launches you into orbit.':'Uplink open.';
+  el('detail').textContent=run.practice?'Try an answer, then see its rank.':current.km===0?'First answer launches you.':'Uplink open.';
   el('signal').textContent=run.practice?'Practice channel':'Receiving transmission';
   el('clock').hidden=run.practice;
   if(!run.practice){
@@ -358,7 +372,7 @@ el('home').onclick=el('exitPractice').onclick=title;
 el('practiceNext').onclick=()=>{run.deck.push(run.deck.shift());run.log=[];run.step='answer';ready()};
 el('pad').onsubmit=ev=>{ev.preventDefault();transmit()};
 el('pass').onclick=()=>transmit(true);
-el('boost').onclick=()=>{armed=!armed;syncBoost();el('response').focus()};
+el('boost').onclick=()=>{armed=!armed;syncBoost();if(matchMedia('(pointer:fine)').matches)el('response').focus({preventScroll:true})};
 el('response').oninput=()=>el('error').textContent='';
 el('skip').onclick=()=>{if(mode==='flying')receipt()};
 el('next').onclick=()=>{

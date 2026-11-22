@@ -138,8 +138,8 @@ button:active:not(:disabled){transform:translateY(1px)}
   box-shadow: inset 0 3px #030a13;
 }
 #radio .line:focus-within {background:var(--mint)}
-#response {display:block;width:100%;padding:5px 10px;text-align:center;color:#ffefd6;caret-color:var(--mint)}
-#response::placeholder {color:#9db4b5;opacity:1}
+#response {display:block;width:100%;height:44px;padding:5px 10px;text-align:center;color:#ffefd6;caret-color:var(--mint)}
+#response::placeholder {color:#b5c7c2;opacity:1}
 @font-face {
   font-family: "Oddburn Radio";
   src: url("RADIO_FONT_URL") format("woff");
@@ -152,15 +152,21 @@ button:active:not(:disabled){transform:translateY(1px)}
 }
 #radio #response {font-size:20px;letter-spacing:1px}
 #radio #launch {font-size:16px}
-#radio .options {display:grid;grid-template-columns:1fr auto 1fr;gap:8px;align-items:center}
+#radio .options {display:grid;grid-template-columns:minmax(0,1fr) auto minmax(0,1fr);gap:6px;align-items:center;margin-top:8px}
+#radio .options button {white-space:nowrap;height:44px;min-height:44px;line-height:1;align-self:center}
 #radio button {--pixel:2px;--step:4px;clip-path:var(--corners)}
 #radio button:focus-visible {outline:2px solid #ffde9e;outline-offset:-4px}
-#launch {grid-column:2;grid-row:1;min-width:112px;min-height:40px;letter-spacing:.06em;text-transform:uppercase}
+#launch {grid-column:2;grid-row:1;min-width:108px;letter-spacing:.04em;text-transform:uppercase}
+#boost,#pass {display:inline-flex;align-items:center;justify-content:center;gap:6px;color:#c6dad3;background:#152b35;border:0;box-shadow:inset 0 1px #46625f,inset 0 -2px #244247;text-decoration:none;font:600 13px/1 Consolas,monospace}
 #boost {grid-column:1;grid-row:1;justify-self:start}
-#pass {grid-column:3;grid-row:1;justify-self:end}
+#boost::before {content:"";width:7px;height:7px;box-sizing:border-box;border:1px solid #99b0a5;flex:none}
+#boost[aria-pressed=true] {color:#ffe6af;background:#362e23;box-shadow:inset 0 2px #e7b267,inset 0 -2px #79603f}
+#boost[aria-pressed=true]::before {background:#ffcc7d;border-color:#ffe6af}
+#pass {grid-column:3;grid-row:1;justify-self:end;min-width:52px}
+#boost:enabled:hover,#pass:hover {filter:brightness(1.18)}
 #radio #continue {justify-content:center}
 @media(min-width:701px) {
-  #radio {width:min(490px,40vw)}
+  #radio {width:clamp(390px,40vw,490px)}
 }
 @media(min-width:701px) and (max-height:600px) {
   #meters {left:var(--gutter);right:auto}
@@ -172,9 +178,9 @@ button:active:not(:disabled){transform:translateY(1px)}
   #radio {top:62px;max-height:calc(100dvh - 68px);overflow:auto}
 }
 @media(max-width:400px) {
-  #radio .options {gap:4px}
-  #launch {min-width:88px}
-  #boost {padding-inline:6px}
+  #radio .options {gap:3px}
+  #launch {min-width:90px}
+  #boost {padding-inline:6px;gap:4px;font-size:12px}
 }
 #rankings {margin:8px 0;color:var(--mint);text-align:left;font-size:13px}
 #rankings summary {cursor:pointer;padding:6px 0}
@@ -236,3 +242,48 @@ button:active:not(:disabled){transform:translateY(1px)}
 #record button:focus-visible {outline-offset:-4px}
 #record .creator-credit {margin-top:10px}
 @media(max-height:500px){#game[data-scene=record] #record{max-height:calc(100dvh - 64px);top:calc(50% + 19px)}}
+
+@media(max-width:700px) {
+  #game {--gutter:clamp(10px,3vw,18px)}
+  header,footer {left:max(var(--gutter),env(safe-area-inset-left));right:max(var(--gutter),env(safe-area-inset-right))}
+  header {top:max(5px,env(safe-area-inset-top))}
+  header button,#record button,#continue button {min-height:44px}
+  #title {left:max(18px,env(safe-area-inset-left));width:min(390px,calc(100% - 36px))}
+  #title .intro {max-width:31ch}
+  #title .route-scale summary {min-height:30px;align-content:center}
+  #meters {top:calc(max(5px,env(safe-area-inset-top)) + 48px);left:var(--gutter);right:var(--gutter);display:flex;align-items:center;gap:6px;text-align:left;pointer-events:none}
+  #meters #counter {width:96px}
+  #altitudeTape {clip-path:inset(calc(max(5px,env(safe-area-inset-top)) + 74px) 0 0)}
+  #meters #track {display:none}
+  #meters #zone {display:inline;padding:2px 5px;background:#071325db}
+  #meters #routeTarget {display:none}
+  #radio {top:calc(max(5px,env(safe-area-inset-top)) + 76px);width:min(440px,calc(100% - 2 * var(--gutter)));padding:12px}
+  #radio .radio-head {gap:7px;margin-bottom:9px;padding-bottom:7px}
+  #radio #windowTrack {margin:-10px 0 8px}
+  #radio h2 {margin:8px 0 4px;text-wrap:balance}
+  #radio #detail {font-size:13px;line-height:1.35}
+  #pad {margin-top:10px}
+  #pips {gap:3px}
+  #pips i {width:5px;height:8px}
+  #clock {font-size:14px}
+  #game[data-scene=record] #meters {display:none}
+}
+@media(max-width:700px) and (max-height:510px) {
+  #game[data-scene=ready] #meters,#game[data-scene=receipt] #meters {display:none}
+  #radio {top:calc(max(5px,env(safe-area-inset-top)) + 46px);max-height:calc(100% - max(5px,env(safe-area-inset-top)) - 52px);overflow-y:auto;overscroll-behavior:contain}
+}
+@media(orientation:landscape) and (max-height:540px) and (min-width:550px) {
+  #game {--gutter:max(14px,env(safe-area-inset-left))}
+  #radio {left:var(--gutter);top:max(50px,calc(env(safe-area-inset-top) + 45px));width:min(49%,420px);padding:10px 12px;transform:none;max-height:calc(100% - 55px);overflow-y:auto}
+  #game[data-scene=flying] #radio {width:max-content}
+  #meters {left:auto;right:max(14px,env(safe-area-inset-right));top:52px}
+  #game[data-scene=ready] #meters {display:block;text-align:right}
+  #meters #counter {width:104px;margin-left:auto}
+  #altitudeTape {clip-path:inset(94px 0 0)}
+  #radio .radio-head {gap:7px}
+  #radio .options {gap:3px}
+  #launch {min-width:90px}
+  #boost {font-size:12px;padding-inline:5px;gap:4px}
+  #game[data-scene=ready] footer,#game[data-scene=receipt] footer,#game[data-scene=record] footer {display:none}
+}
+#game[data-keyboard] #radio {top:var(--keyboard-top);max-height:var(--keyboard-room);overflow-y:auto;overscroll-behavior:contain}

@@ -546,6 +546,7 @@ const QUESTIONS = [
   },
   {
     id: "austen",
+    replacedBy: "south-america",
     prompt: "Name one of Jane Austen's six completed novels.",
     answers: [
       entry("Pride and Prejudice", 10),
@@ -554,6 +555,17 @@ const QUESTIONS = [
       entry("Persuasion", 60),
       entry("Mansfield Park", 60),
       entry("Northanger Abbey", 100)
+    ]
+  },
+  {
+    id: "south-america",
+    prompt: "Name a country in South America.",
+    answers: [
+      entry("Brazil", 10, ["Brasil"]), entry("Argentina", 10),
+      entry("Colombia", 20), entry("Chile", 30), entry("Peru", 30),
+      entry("Venezuela", 40), entry("Ecuador", 50), entry("Bolivia", 60),
+      entry("Uruguay", 70), entry("Paraguay", 80), entry("Guyana", 90),
+      entry("Suriname", 100, ["Surinam"])
     ]
   },
   {

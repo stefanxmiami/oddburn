@@ -74,14 +74,23 @@ document.addEventListener('keydown',event=>{
   event.preventDefault();panSky(event.key==='ArrowUp'?100:-100);
 });
 const key='vernier-horizon-mission-v1';
+const playableIds=QUESTIONS.filter(q=>!q.replacedBy).map(q=>q.id);
 function save(){try{localStorage.setItem('vernier-flight-v1',JSON.stringify(memory))}catch{}}
 function persist(){if(run&&!run.practice)try{localStorage.setItem(key,JSON.stringify(run))}catch{}}
 function stored(){
   try{
     const saved=localStorage.getItem(key);
     const r=JSON.parse(saved??localStorage.getItem('vernier-relay-mission-v1'));
+    if(Array.isArray(r?.deck)&&Array.isArray(r.log)){
+      for(let i=r.log.length;i<r.deck.length;i++){
+        const replacement=qFor(r.deck[i])?.replacedBy;
+        if(!replacement)continue;
+        r.deck[i]=r.deck.includes(replacement)?playableIds.find(id=>!r.deck.includes(id)):replacement;
+        if(i===r.log.length)delete r.deadline;
+      }
+    }
     if(r?.deck?.length===5&&r.step!=='record'&&Array.isArray(r.log)){
-      const extra=shuffle(QUESTIONS.map(q=>q.id).filter(id=>!r.deck.includes(id)));
+      const extra=shuffle(playableIds.filter(id=>!r.deck.includes(id)));
       r.deck.push(...extra.slice(0,attempts-r.deck.length));
       let distance=0,drifting=false;
       const entries=[];
@@ -122,10 +131,11 @@ function shuffle(items){
   return deck;
 }
 function fresh(practice){
-  const ids=QUESTIONS.map(q=>q.id);
+  const ids=playableIds;
   let deck=shuffle(ids).slice(0,attempts);
   if(practice||!memory.played)deck=['planets',...shuffle(ids.filter(id=>id!=='planets')).slice(0,attempts-1)];
-  if(practice&&ids.includes(practiceTopic))deck=[practiceTopic,...shuffle(ids.filter(id=>id!==practiceTopic))];
+  const topic=qFor(practiceTopic)?.replacedBy??practiceTopic;
+  if(practice&&ids.includes(topic))deck=[topic,...shuffle(ids.filter(id=>id!==topic))];
   return {practice,deck,log:[],boostUsed:false,step:'answer',id:Date.now()+'-'+Math.random().toString(36).slice(2,7)};
 }
 function qFor(id){return QUESTIONS.find(q=>q.id===id)}

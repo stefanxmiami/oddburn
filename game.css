@@ -81,7 +81,7 @@ button:active:not(:disabled){transform:translateY(1px)}
 @keyframes receive{from{opacity:0;transform:translateY(-3px)}to{opacity:1;transform:none}}
 @media(prefers-reduced-motion:reduce){#game[data-scene=ready] #pad{animation:none}}
 
-#radio {
+#radio, #record {
   --pixel: 3px;
   --step: calc(var(--pixel) * 2);
   --corners: polygon(
@@ -90,6 +90,8 @@ button:active:not(:disabled){transform:translateY(1px)}
     100% calc(100% - var(--step)), calc(100% - var(--pixel)) calc(100% - var(--step)), calc(100% - var(--pixel)) calc(100% - var(--pixel)), calc(100% - var(--step)) calc(100% - var(--pixel)), calc(100% - var(--step)) 100%,
     var(--step) 100%, var(--step) calc(100% - var(--pixel)), var(--pixel) calc(100% - var(--pixel)), var(--pixel) calc(100% - var(--step)), 0 calc(100% - var(--step))
   );
+}
+#radio {
   left: 50%;
   top: clamp(58px, 9vh, 90px);
   transform: translateX(-50%);
@@ -194,3 +196,43 @@ button:active:not(:disabled){transform:translateY(1px)}
 .creator-credit a{color:var(--mint);text-underline-offset:3px}
 .creator-credit a:focus-visible{outline:2px solid var(--mint);outline-offset:3px}
 @media(max-height:680px){#title{max-height:calc(100dvh - 100px);overflow:auto;top:54px;transform:none}}
+
+#game {min-height:0;overscroll-behavior:none}
+#sky {touch-action:none}
+#game[data-scene=record] #record {
+  --edge:#759b91;
+  display:flex;flex-direction:column;gap:0;top:50%;bottom:auto;transform:translateY(-50%);
+  width:min(450px,calc(100% - 2 * var(--gutter)));max-height:calc(100dvh - 112px);
+  padding:3px;clip-path:var(--corners);background:var(--edge);border:0;box-shadow:none;
+  overflow:hidden;text-shadow:none;color:var(--paper);
+}
+.record-head,#record .menu {
+  background:#132c36;padding:11px 16px;flex:none;
+}
+.record-head,.record-score,#record button,#log b,.log-index {
+  font-family:"Oddburn Radio",Consolas,monospace;font-weight:400;text-transform:uppercase;
+}
+.record-head {display:flex;gap:10px;align-items:center;color:var(--mint);font-size:14px;line-height:20px;letter-spacing:.05em;border-bottom:2px solid #406762}
+.status-led {width:8px;height:8px;background:var(--mint);box-shadow:inset -2px -2px #519776}
+#recordBody {min-height:0;padding:14px 16px;background:#091925;overflow-y:auto;overscroll-behavior:contain;scrollbar-color:#648779 #091925;scrollbar-width:thin}
+#recordBody:focus-visible {outline:2px solid var(--mint);outline-offset:-3px}
+.record-award {display:flex;align-items:center;justify-content:space-between;gap:12px}
+#outcome {line-height:1;margin:0 0 8px;font-size:clamp(30px,3.3vw,42px)}
+.record-score {display:flex;align-items:baseline;gap:6px;color:#b4cac5;font-size:14px}
+#ratingScore {margin:0;font-size:24px;color:#ffdb91}
+#ratingBars {display:flex;align-items:end;gap:3px;margin:0}
+#ratingBars i {width:7px;height:10px;background:#304a50}
+#ratingBars i:nth-child(2){height:16px}#ratingBars i:nth-child(3){height:22px}#ratingBars i:nth-child(4){height:28px}#ratingBars i:nth-child(5){height:34px}
+#ratingBars i.lit {background:var(--mint);box-shadow:inset 0 -3px #589d79}
+#ratingNote {font-size:14px;margin:12px 0 4px}
+#summary {font-size:13px}
+#record #profile {display:block;margin:12px 0 5px;background:#06111c;border-block:1px solid #304f50}
+#record #log li {display:grid;grid-template-columns:2ch minmax(0,1fr) auto;align-items:baseline;gap:10px;padding:5px 0;border-bottom:1px solid #294248;font-size:14px;color:var(--paper)}
+#log small {display:block;color:#a9c0bb;font-size:11px;line-height:1.4}
+#log .log-index {font-size:12px;color:#92b2a9}
+#log b {font-size:12px}
+#record .menu {margin:0;gap:8px;border-top:2px solid #406762}
+#record button {--pixel:2px;--step:4px;clip-path:var(--corners);font-size:14px;min-height:38px}
+#record button:focus-visible {outline-offset:-4px}
+#record .creator-credit {margin-top:10px}
+@media(max-height:500px){#game[data-scene=record] #record{max-height:calc(100dvh - 64px);top:calc(50% + 19px)}}

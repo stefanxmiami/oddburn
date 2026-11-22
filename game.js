@@ -16,16 +16,18 @@ let artReady=false,armed=false;
 let clockSecond=-1;
 let markedUntil=0;
 let cameraAltitude=0;
-const altitudeScale=1.1;
 let followCenter=0;
 let browseTarget=null;
 let browseCenter=0;
 let browseWeight=0;
 function panSky(pixels){
   if(!artReady||!pixels)return;
-  if(browseTarget===null)browseCenter=mix(followCenter,browseCenter,browseWeight);
+  if(browseTarget===null)browseCenter=Math.max(padCenter,mix(followCenter,browseCenter,browseWeight));
   const step=pixels*H/(sky.clientHeight*altitudeScale);
-  browseTarget=Math.max(0,Math.min(destination,(browseTarget??browseCenter)+step));
+  const start=browseTarget??browseCenter;
+  const target=Math.max(padCenter,Math.min(destination,start+step));
+  if(Math.abs(target-start)<.001)return;
+  browseTarget=target;
   el('followRocket').hidden=false;
 }
 function followRocket(){
@@ -48,7 +50,7 @@ const gameView=el('game');
 gameView.addEventListener('wheel',event=>{
   if(event.ctrlKey||Math.abs(event.deltaX)>Math.abs(event.deltaY))return;
   const panel=event.target.closest('.overlay');
-  if(event.target.closest('#rankList')||(panel&&panel.scrollHeight>panel.clientHeight+1))return;
+  if(event.target.closest('#rankList,#record')||(panel&&panel.scrollHeight>panel.clientHeight+1))return;
   event.preventDefault();
   const unit=event.deltaMode===1?16:event.deltaMode===2?sky.clientHeight:1;
   panSky(-event.deltaY*unit);
@@ -67,7 +69,7 @@ gameView.addEventListener('touchend',()=>{dragY=null});
 gameView.addEventListener('touchcancel',()=>{dragY=null});
 document.addEventListener('keydown',event=>{
   if(event.key==='Escape'&&browseTarget!==null){followRocket();return}
-  if(event.target.closest('input,textarea,#rankList,summary')||event.altKey||event.ctrlKey||event.metaKey)return;
+  if(event.target.closest('input,textarea,#rankList,#record,summary')||event.altKey||event.ctrlKey||event.metaKey)return;
   if(event.key!=='ArrowUp'&&event.key!=='ArrowDown')return;
   event.preventDefault();panSky(event.key==='ArrowUp'?100:-100);
 });
@@ -234,7 +236,7 @@ function transmit(pass=false,timeout=false){
   timeout=timeout||(!run.practice&&Date.now()>=run.deadline);
   if(!timeout&&!pass&&!typed){el('error').textContent='Enter an answer or pass this uplink.';input.focus();return}
   const q=activeQuestion(),a=(pass||timeout)?null:validateAnswer(q,typed);
-  if(run.practice&&!pass&&!a){el('error').textContent='Unknown signal. Try another answer.';input.focus();return}
+  if(!timeout&&!pass&&!a){el('error').textContent='No clear match. Check the spelling or try another answer.';input.focus();input.select();return}
   const boost=armed&&!pass&&!timeout&&!run.boostUsed;
   const base=run.practice?0:total();
   const failure=a?'':base>=orbitGate?'flyby':base>0?'fall':'scrub';
@@ -284,7 +286,7 @@ function record(){
   memory.signalBest=Math.max(memory.signalBest||0,points);
   memory.played=true;memory.voyageBest=Math.max(memory.voyageBest||0,total());save();
   label('outcome',rating.name);
-  el('ratingScore').textContent=points+' / 700 pts';
+  el('ratingScore').textContent=points;
   el('ratingNote').textContent=points?rating.note:'The night crew heard only the carrier tone.';
   el('ratingBars').replaceChildren(...signalRatings.map(tier=>{
     const bar=document.createElement('i');
@@ -293,6 +295,7 @@ function record(){
   }));
   el('game').dataset.result=reached?'docked':'miss';
   drawProfile();
+  el('recordBody').scrollTop=0;
   if(reached){tone(560,.12);tone(704,.15,.15);tone(838,.34,.36)}
   el('summary').textContent=reached?'Your last signal left just before the fictional black hole swallowed the probe at the galactic rim.':total()===0?'The probe stayed on the pad. Send a valid answer to launch.':formatKm(total())+' from launch. Last contact near '+(passedWaypoint(total())?.name??'Earth')+'.';
   el('log').replaceChildren();
@@ -301,7 +304,13 @@ function record(){
     const row=document.createElement('li'),v=document.createElement('b');
     const delta=distanceKm(position+e.gain)-distanceKm(position);
     position+=e.gain;
-    row.append(String(i+1).padStart(2,'0')+'  '+e.name+' / '+entryPoints(e)+' pts'+(e.rank?' · '+rankText(e.rank,qFor(e.id)):'')+(e.boost?' ×1.5':''));v.textContent=e.failure==='flyby'?'Lock lost':(delta<0?'−':delta>0?'+':'')+distanceText(Math.abs(delta));row.append(v);el('log').append(row);
+    const index=document.createElement('span'),answer=document.createElement('span'),detail=document.createElement('small');
+    index.className='log-index';index.textContent=String(i+1).padStart(2,'0');
+    answer.textContent=e.name;
+    const distance=e.failure==='flyby'?'Lock lost':(delta<0?'-':delta>0?'+':'')+distanceText(Math.abs(delta));
+    detail.textContent=[distance,e.rank&&rankText(e.rank,qFor(e.id)),e.boost&&'×1.5'].filter(Boolean).join(' · ');
+    answer.append(detail);v.textContent=entryPoints(e)+' pts';
+    row.append(index,answer,v);el('log').append(row);
   }
   el('signal').textContent=reached?'Mission complete':'Ground control / off air';
   el('announce').textContent=rating.name+'. '+points+' points. '+el('summary').textContent;el('again').focus({preventScroll:true});

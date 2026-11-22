@@ -10,6 +10,8 @@ const glyphs = 'ABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789 .:!?-/+';
 let inkFont;
 let logicalW = 480;
 const H = 270;
+const altitudeScale=1.1;
+const padCenter=(237+24*Math.sin(-.47)-39*Math.cos(-.47)-H/2)/altitudeScale;
 
 async function loadArt() {
   await Promise.all(Object.entries(assetURLs).map(async ([name,src])=>{
@@ -181,8 +183,7 @@ function drawScene(state,clock,showAltitude) {
   ctx.globalAlpha=1;
   const titleScene=mode==='title';
   const follow=titleScene?k:cameraAltitude;
-  const padFocus=(237+24*Math.sin(-.47)-39*Math.cos(-.47)-H/2)/altitudeScale;
-  const inspected=browseCenter-padFocus;
+  const inspected=Math.max(0,browseCenter-padCenter);
   const viewKm=mix(k,Math.max(0,inspected),browseWeight);
   const terrain=mix(follow,inspected,browseWeight);
   const atAltitude=alt=>H/2+(browseCenter-alt)*altitudeScale;
@@ -364,7 +365,7 @@ function drawScene(state,clock,showAltitude) {
     tag.style.top=clip((rocketY+(freeFlight&&k<spaceBoundary?16:8))/H)*100+'%';
   }
   if(browseTarget!==null){
-    const label='Viewing '+formatKm(mix(followCenter,browseCenter,browseWeight));
+    const label=browseCenter<=padCenter+.1?'Viewing launch pad':'Viewing '+formatKm(mix(followCenter,browseCenter,browseWeight));
     if(el('viewKm').textContent!==label)el('viewKm').textContent=label;
   }
 }

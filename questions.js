@@ -634,13 +634,28 @@ function normalize(value, strip) {
 }
 
 function editDistance(a, b) {
+  let twoBack;
   let previous = Array.from({ length: b.length + 1 }, (_, i) => i);
   for (let i = 1; i <= a.length; i++) {
     const current = [i];
-    for (let j = 1; j <= b.length; j++) current[j] = Math.min(current[j - 1] + 1, previous[j] + 1, previous[j - 1] + (a[i - 1] === b[j - 1] ? 0 : 1));
+    for (let j = 1; j <= b.length; j++) {
+      current[j] = Math.min(current[j - 1] + 1, previous[j] + 1, previous[j - 1] + (a[i - 1] === b[j - 1] ? 0 : 1));
+      if (i > 1 && j > 1 && a[i - 1] === b[j - 2] && a[i - 2] === b[j - 1]) {
+        current[j] = Math.min(current[j], twoBack[j - 2] + 1);
+      }
+    }
+    twoBack = previous;
     previous = current;
   }
   return previous[b.length];
+}
+
+function spellingSimilarity(input, candidate) {
+  const length = Math.max(input.length, candidate.length);
+  if (Math.min(input.length, candidate.length) < 3 || length < 4) return 0;
+  if (input.replace(/\D/g, '') !== candidate.replace(/\D/g, '')) return 0;
+  if (Math.abs(input.length - candidate.length) > length * .3) return 0;
+  return 1 - editDistance(input, candidate) / length;
 }
 
 function validateAnswer(q, input) {
@@ -649,12 +664,19 @@ function validateAnswer(q, input) {
   if (!normalized || q.blocked?.some(n => key(n) === normalized)) return null;
   const exact = q.answers.find(a => [a.name, ...a.aliases].some(n => key(n) === normalized));
   if (exact) return { ...exact, corrected: false };
-  if (normalized.length < 5) return null;
-  const near = q.answers.filter(a => [a.name, ...a.aliases].some(n => {
-    const alias = key(n);
-    return alias.length >= 5 && editDistance(normalized, alias) === 1;
-  }));
-  return near.length === 1 ? { ...near[0], corrected: true } : null;
+  let best = null, highest = 0, runnerUp = 0;
+  for (const answer of q.answers) {
+    const score = Math.max(...[answer.name, ...answer.aliases].map(name => spellingSimilarity(normalized, key(name))));
+    if (score > highest) {
+      runnerUp = highest;
+      highest = score;
+      best = answer;
+    } else {
+      runnerUp = Math.max(runnerUp, score);
+    }
+  }
+  for (const word of q.blocked ?? []) runnerUp = Math.max(runnerUp, spellingSimilarity(normalized, key(word)));
+  return highest >= .70 && highest - runnerUp >= .05 ? { ...best, corrected: true } : null;
 }
 
 

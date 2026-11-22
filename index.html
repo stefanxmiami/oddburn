@@ -18,7 +18,17 @@
     <details id="rankings" hidden><summary id="rankSummary">Answer rankings</summary><ol id="rankList" aria-label="Answers ranked from common to rare"></ol></details>
     <div id="continue" hidden><button class="primary" id="next">Next transmission</button><button id="practiceNext" class="ghost" hidden>Next prompt</button><button id="exitPractice" class="quiet" hidden>Title</button></div>
   </section>
-  <section id="record" class="overlay" hidden><p class="eyebrow"><i></i> Signal classification <span id="ratingScore"></span></p><h2 id="outcome" tabindex="-1"></h2><div id="ratingBars" aria-hidden="true"></div><p id="ratingNote"></p><p id="summary"></p><canvas id="profile" width="288" height="40" role="img" aria-label="Distance from launch after each transmission"></canvas><ol id="log"></ol><div class="menu"><button class="primary" id="again">Fly again</button><button class="ghost" id="home">Title</button></div><p class="creator-credit">Design and development by <a href="/creator/">Stefan Ivanov</a></p></section>
+  <section id="record" class="overlay" aria-labelledby="outcome" hidden>
+    <div class="record-head"><span class="status-led" aria-hidden="true"></span>Signal classification</div>
+    <div id="recordBody" tabindex="0" role="region" aria-label="Flight report">
+      <div class="record-award"><div><h2 id="outcome" tabindex="-1"></h2><div class="record-score"><strong id="ratingScore"></strong> / 700 pts</div></div><div id="ratingBars" aria-hidden="true"></div></div>
+      <p id="ratingNote"></p><p id="summary"></p>
+      <canvas id="profile" width="288" height="40" role="img" aria-label="Distance from launch after each transmission"></canvas>
+      <ol id="log" aria-label="Uplink results"></ol>
+      <p class="creator-credit">Design and development by <a href="/creator/">Stefan Ivanov</a></p>
+    </div>
+    <div class="menu"><button class="primary" id="again">Fly again</button><button class="ghost" id="home">Title</button></div>
+  </section>
   <div id="flightReadout" hidden><span id="burnType"></span><strong id="burnAnswer"></strong></div><footer><span id="signal">Observatory ready</span><button id="skip" class="quiet" hidden>Skip flight</button></footer>
   <div id="announce" class="sr" role="status"></div>
 </main><script>CODE_HERE</script></body></html>
